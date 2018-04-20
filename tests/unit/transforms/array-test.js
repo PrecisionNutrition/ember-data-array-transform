@@ -1,55 +1,53 @@
-import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
+import { typeOf } from '@ember/utils';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-const {
-  typeOf,
-} = Ember;
+module('Unit | Transform | array', function(hooks) {
+  setupTest(hooks);
 
-moduleFor('transform:array', 'Unit | Transform | array', {
-});
+  test('#deserialize', function(assert) {
+    let transform = this.owner.lookup('transform:array');
 
-test('#deserialize', function(assert) {
-  let transform = this.subject();
+    let ret;
 
-  let ret;
+    ret = transform.deserialize();
 
-  ret = transform.deserialize();
+    assert.equal(
+      typeOf(ret),
+      'array'
+    );
 
-  assert.equal(
-    typeOf(ret),
-    'array'
-  );
+    let arg = ['foo', 'bar'];
 
-  let arg = ['foo', 'bar'];
+    ret = transform.deserialize(arg);
 
-  ret = transform.deserialize(arg);
+    assert.deepEqual(
+      ret,
+      arg,
+      'returns the argument'
+    );
+  });
 
-  assert.deepEqual(
-    ret,
-    arg,
-    'returns the argument'
-  );
-});
+  test('#serialize', function(assert) {
+    let transform = this.owner.lookup('transform:array');
 
-test('#serialize', function(assert) {
-  let transform = this.subject();
+    let ret;
 
-  let ret;
+    ret = transform.serialize();
 
-  ret = transform.serialize();
+    assert.equal(
+      typeOf(ret),
+      'array'
+    );
 
-  assert.equal(
-    typeOf(ret),
-    'array'
-  );
+    let arg = ['foo', 'bar'];
 
-  let arg = ['foo', 'bar'];
+    ret = transform.serialize(arg);
 
-  ret = transform.serialize(arg);
-
-  assert.deepEqual(
-    ret,
-    arg,
-    'returns the argument'
-  );
+    assert.deepEqual(
+      ret,
+      arg,
+      'returns the argument'
+    );
+  });
 });
