@@ -1,10 +1,6 @@
-import Ember from 'ember';
+import { isEmpty } from '@ember/utils';
+import { A } from '@ember/array';
 import Transform from 'ember-data/transform';
-
-const {
-  isEmpty,
-  A,
-} = Ember;
 
 export default Transform.extend({
   deserialize(serialized) {
