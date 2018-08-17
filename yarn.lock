@@ -2237,7 +2237,7 @@ ember-compatibility-helpers@^1.0.0-beta.2:
     ember-cli-version-checker "^2.0.0"
     semver "^5.4.1"
 
-ember-data@^3.1.0:
+ember-data@^3.3.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-3.3.1.tgz#8ff1f7759d35fcb750c8d33435e7ef2f69242dce"
   dependencies:
