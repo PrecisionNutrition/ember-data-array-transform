@@ -2,3 +2,17 @@
 
 Converts attributes that are Arrays into JavaScript arrays. Yet another transform
 you shouldn't need, but do now and then.
+
+Installation
+------------------------------------------------------------------------------
+
+```
+ember install my-addon
+```
+
+
+
+License
+------------------------------------------------------------------------------
+
+This project is licensed under the [MIT License](LICENSE.md).
