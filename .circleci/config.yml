@@ -1,0 +1,173 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check out:
+# - https://circleci.com/docs/2.0/language-javascript/
+# - http://kevin.pfefferle.co/2018/01/27/circleci-2-with-ember
+
+defaults: &defaults
+  docker:
+    # specify the version you desire here
+    - image: circleci/node:8-browsers
+      environment:
+        JOBS: 2
+
+  working_directory: ~/repo
+
+version: 2
+jobs:
+  checkout_code:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  install_dependencies:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ .Branch }}--{{ checksum "yarn.lock" }}
+            - v1-dependencies-{{ .Branch }}-
+            - v1-dependencies-
+
+      - run:
+          name: 'Install dependencies'
+          command: |
+            yarn install --non-interactive
+
+      - save_cache:
+          key: v1-dependencies-{{ .Branch }}--{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+
+      - persist_to_workspace:
+          root: .
+          paths:
+              - .
+
+  lint_project:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run JS Lint'
+          command: yarn lint:js
+
+  run_default_tests:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run Tests for Default Ember'
+          command: |
+            yarn test
+
+  run_release_tests:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run Tests for Ember Release'
+          command: |
+            yarn ember try:one ember-release --skip-cleanup
+
+  run_antique_tests:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run Tests for Ember 3.4'
+          command: |
+            yarn ember try:one ember-lts-3.4 --skip-cleanup
+
+  run_beta_tests:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run Tests for Ember Beta'
+          command: |
+            yarn ember try:one ember-beta --skip-cleanup
+
+  run_canary_tests:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run Tests for Ember Canary'
+          command: |
+            yarn ember try:one ember-canary --skip-cleanup
+
+  run_with_jquery_tests:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: 'Run Tests for Ember Canary'
+          command: |
+            yarn ember try:one ember-default-with-jquery --skip-cleanup
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - checkout_code
+
+      - install_dependencies:
+          requires:
+            - checkout_code
+
+      - lint_project:
+          requires:
+            - install_dependencies
+
+      - run_default_tests:
+          requires:
+            - lint_project
+
+      - run_release_tests:
+          requires:
+            - run_default_tests
+
+      - run_antique_tests:
+          requires:
+            - run_default_tests
+
+      - run_beta_tests:
+          requires:
+            - run_default_tests
+
+      - run_canary_tests:
+          requires:
+            - run_default_tests
