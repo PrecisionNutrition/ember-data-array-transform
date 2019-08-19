@@ -1,4 +1,3 @@
-import { typeOf } from '@ember/utils';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 
@@ -12,10 +11,7 @@ module('Unit | Transform | array', function(hooks) {
 
     ret = transform.deserialize();
 
-    assert.equal(
-      typeOf(ret),
-      'array'
-    );
+    assert.ok(Array.isArray(ret));
 
     let arg = ['foo', 'bar'];
 
@@ -35,10 +31,7 @@ module('Unit | Transform | array', function(hooks) {
 
     ret = transform.serialize();
 
-    assert.equal(
-      typeOf(ret),
-      'array'
-    );
+    assert.ok(Array.isArray(ret));
 
     let arg = ['foo', 'bar'];
 
