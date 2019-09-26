@@ -23,8 +23,15 @@ ember install ember-data-array-transform
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+Now you can use the `array` transform in your models.
 
+```javascript
+import DS from 'ember-data'
+
+export default DS.Model.extend({
+    myArrayAttribute: DS.attr('array'),
+    // ...
+```
 
 Contributing
 ------------------------------------------------------------------------------
