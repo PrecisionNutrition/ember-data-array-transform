@@ -98,9 +98,9 @@ jobs:
           at: .
 
       - run:
-          name: 'Run Tests for Ember 3.4'
+          name: 'Run Tests for Ember 3.8'
           command: |
-            yarn ember try:one ember-lts-3.4 --skip-cleanup
+            yarn ember try:one ember-lts-3.8 --skip-cleanup
 
   run_beta_tests:
     <<: *defaults
